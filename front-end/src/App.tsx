@@ -1,6 +1,6 @@
 import './App.css';
-import MainHeader from "./MainHeader";
-import MainFooter from 'MainFooter';
+import MainHeader from "components/MainHeader";
+import MainFooter from 'components/MainFooter';
 import {Routes, Route} from "react-router-dom";
 import Home from './pages/Home/Home';
 import PageNotFound from './pages/PageNotFound/PageNotFound';

@@ -3,6 +3,9 @@ import {NavLink} from "react-router-dom"
 export default function MainHeader(){
     return(<>
         <nav>
+            <NavLink to="/">
+                home
+            </NavLink>
             <NavLink to="/shop">
                 shop
             </NavLink>
