@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\projektas\\back-end\\back-end\\back-end.csproj": {}
+    "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\InvoiceMaker\\back-end\\back-end\\back-end.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\projektas\\back-end\\back-end\\back-end.csproj": {
+    "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\InvoiceMaker\\back-end\\back-end\\back-end.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\projektas\\back-end\\back-end\\back-end.csproj",
+        "projectUniqueName": "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\InvoiceMaker\\back-end\\back-end\\back-end.csproj",
         "projectName": "back-end",
-        "projectPath": "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\projektas\\back-end\\back-end\\back-end.csproj",
+        "projectPath": "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\InvoiceMaker\\back-end\\back-end\\back-end.csproj",
         "packagesPath": "C:\\Users\\Tomas2\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\projektas\\back-end\\back-end\\obj\\",
+        "outputPath": "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\InvoiceMaker\\back-end\\back-end\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -50,6 +50,10 @@
             "Microsoft.EntityFrameworkCore.Relational": {
               "target": "Package",
               "version": "[7.0.2, )"
+            },
+            "NSubstitute": {
+              "target": "Package",
+              "version": "[4.4.0, )"
             },
             "Newtonsoft.Json.Bson": {
               "target": "Package",

@@ -123,3 +123,5 @@ C:\Users\Tomas2\Desktop\kiti\presentconnection\InvoiceMaker\back-end\NUnitTests\
 C:\Users\Tomas2\Desktop\kiti\presentconnection\InvoiceMaker\back-end\NUnitTests\obj\Debug\net6.0\NUnitTests.pdb
 C:\Users\Tomas2\Desktop\kiti\presentconnection\InvoiceMaker\back-end\NUnitTests\obj\Debug\net6.0\NUnitTests.genruntimeconfig.cache
 C:\Users\Tomas2\Desktop\kiti\presentconnection\InvoiceMaker\back-end\NUnitTests\obj\Debug\net6.0\ref\NUnitTests.dll
+C:\Users\Tomas2\Desktop\kiti\presentconnection\InvoiceMaker\back-end\NUnitTests\bin\Debug\net6.0\Castle.Core.dll
+C:\Users\Tomas2\Desktop\kiti\presentconnection\InvoiceMaker\back-end\NUnitTests\bin\Debug\net6.0\NSubstitute.dll

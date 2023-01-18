@@ -3,11 +3,11 @@
     public class AccountLoginDTO
     {
         public string Username { get; set; }
-        public string PasswordHash { get; set; }
-        public AccountLoginDTO(string username, string passwordHash)
+        public string Password { get; set; }
+        public AccountLoginDTO(string username, string password)
         {
             Username = username;
-            PasswordHash = passwordHash;
+            Password = password;
         }
     }
 }

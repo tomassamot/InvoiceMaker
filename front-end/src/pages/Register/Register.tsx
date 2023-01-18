@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "./Register.css";
+import {fetchCountries} from "components/CountryFetcher";
 import UsernameField from "components/UsernameField";
 import PasswordField from "components/PasswordField";
 import ConfirmPasswordField from "components/ConfirmPasswordField";
@@ -8,48 +9,42 @@ import IsProviderCheckbox from "components/IsProviderCheckbox";
 import IsPayingVATCheckbox from "components/IsPayingVATCheckbox";
 import LocationDropdown from "components/LocationDropdown";
 
-export interface Location{
+export interface Country{
   name: string;
   region: string;
   vat: number;
+}
+interface Account{
+  username: string
+  password: string
+  confirmPassword: string 
+  locationName: string
+  locationRegion: string
+  locationVAT: number
+  isProvider: boolean
+  isPayingVAT: boolean
 }
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [selectedLocationIndex, setSelectedLocationIndex] = useState(0);
-  const [allLocations, setAllLocations] = useState<Location[]>();
+  const [allLocations, setAllLocations] = useState<Country[]>();
   const [isProvider, setIsProvider]=useState(false);
   const [isPayingVAT, setIsPayingVAT]=useState(false);
 
-  const [usernameValidator, setUsernameValidator] = useState("");
-  const [passwordValidator, setPasswordValidator] = useState("");
-  const [confirmPasswordValidator, setConfirmPasswordValidator] = useState("");
+  const [validator, setValidator] = useState("");
 
-  let locationIndex=-1;
+  const navigate = useNavigate();
+
   useEffect(()=>{
-    fetch("https://localhost:7231/Country",{
-      method: "GET",
-      headers: {
-        
-      }
-    })
-    .then((response)=>
-    response.json()
-    .then((data)=> setAllLocations(data))
-    .then(()=>{
-      console.log("cycle start");
-      if(allLocations !== undefined){
-        for(let i = 0;i<allLocations.length;i++){
-          console.log(i+". "+allLocations[i]);
-        }
-      }
-    })
-    .catch((error)=>console.error(error))
-    )
-  }, [])
+    handleFetchData();
+  }, []);
+  const handleFetchData =async ()=>{
+    setAllLocations(await fetchCountries());
+  }
 
-  const validateFields = () =>{
+  /*const validateFields = () =>{
     let fieldsAreValid = true;
 
     setUsernameValidator("");
@@ -73,26 +68,38 @@ export default function Register() {
     }
 
     return fieldsAreValid;
-  }
+  }*/
+
   const handleSubmit = (event: { preventDefault: () => void }) =>{
     event.preventDefault();
-    let fieldsAreValid = validateFields();
 
-    if(fieldsAreValid){
-      // fetch POST
-      if(true /*fetch response is created*/){
-        console.log("register fetch was good")
-        // give feedback
-        // navigate("/login");
-      }
-      else{
-        console.log("register fetch was bad");
-        // set username validator to response message
-      } 
-    }
-    else{
-    console.log("register was bad");
-    }
+      let pickedLocation : Country = allLocations !== undefined ? allLocations[selectedLocationIndex] : {name: "", region: "", vat: 0};
+
+      let account : Account = {username: username, password: password, confirmPassword: confirmPassword, locationName: pickedLocation.name, locationRegion: pickedLocation.region, locationVAT: pickedLocation.vat, isProvider: isProvider, isPayingVAT: isPayingVAT}
+
+      fetch("https://localhost:7231/Account",{
+        method: "POST",
+        body: JSON.stringify(account),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(async (response)=>{
+        if(response.status === 201){
+          navigate("/Login");
+        }
+        else if(response.status === 400){
+          response.text()
+          .then((data)=>{
+            setValidator(data);
+          })
+          /*response.json()
+          .then((data)=>{
+            setUsernameValidator(data);
+          })*/
+        }
+      })
+      .catch((error)=>console.error(error));
   }
   const handleUsernameChange = (newUsername: React.ChangeEvent<HTMLInputElement>)=>{
     setUsername(newUsername.target.value);
@@ -114,21 +121,24 @@ export default function Register() {
   }
   return (
     <>
+    <h1>REGISTER</h1>
     <form onSubmit={handleSubmit}>
       <div className="wrapper">
         <div className="column-wrapper" id="not-location">
+          {
+            validator !== "" ?
+            (<label style={{color: "red"}}>* {validator}</label>)
+            : ""
+          }
           <UsernameField
-            usernameValidator={usernameValidator}
             username={username}
             handleUsernameChange={handleUsernameChange}
           />
           <PasswordField
-            passwordValidator={passwordValidator}
             password={password}
             handlePasswordChange={handlePasswordChange}
           />
           <ConfirmPasswordField
-            confirmPasswordValidator={confirmPasswordValidator}
             confirmPassword={confirmPassword}
             handleConfirmPasswordChange={handleConfirmPasswordChange}
           />

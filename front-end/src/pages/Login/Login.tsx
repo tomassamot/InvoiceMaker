@@ -8,10 +8,11 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [usernameValidator, setUsernameValidator] = useState("");
-  const [passwordValidator, setPasswordValidator] = useState("");
+  const [validator, setValidator] = useState("");
 
-  const validateFields = () =>{
+  const navigate = useNavigate();
+
+  /*const validateFields = () =>{
     let fieldsAreValid = true;
 
     setUsernameValidator("");
@@ -27,26 +28,28 @@ export default function Login() {
     }
 
     return fieldsAreValid;
-  }
+  }*/
   const handleSubmit = (event: { preventDefault: () => void }) =>{
     event.preventDefault();
-    let fieldsAreValid = validateFields();
 
-    if(fieldsAreValid){
-      // fetch POST
-      if(true /*fetch response is ok*/){
-        console.log("login fetch was good")
-        // save something in session storage
-        // navigate("/");
-      }
-      else{
-        console.log("login fetch was bad");
-        // set username validator to response message
-      } 
-    }
-    else{
-    console.log("login was bad");
-  }
+      fetch("https://localhost:7231/Account/Login",{
+        method: "POST",
+        body: JSON.stringify({username, password}),
+        headers:{
+          "Content-Type": "application/json"
+        }
+      })
+      .then(async (response)=>{
+        if(response.status === 200){
+          sessionStorage.setItem("myId", await response.json());
+          navigate("/");
+          window.location.reload();
+        }
+        else{
+          setValidator(await response.text());
+        }
+      })
+      .catch((error)=>console.error(error));
   }
   const handleUsernameChange = (newUsername: React.ChangeEvent<HTMLInputElement>)=>{
     setUsername(newUsername.target.value);
@@ -56,15 +59,19 @@ export default function Login() {
   }
   return (
     <>
+    <h1>LOGIN</h1>
     <form onSubmit={handleSubmit}>
       <div className="column-wrapper">
+      {
+            validator !== "" ?
+            (<label style={{color: "red"}}>* {validator}</label>)
+            : ""
+          }
         <UsernameField
-          usernameValidator={usernameValidator}
           username={username}
           handleUsernameChange={handleUsernameChange}
         />
         <PasswordField
-          passwordValidator={passwordValidator}
           password={password}
           handlePasswordChange={handlePasswordChange}
         />

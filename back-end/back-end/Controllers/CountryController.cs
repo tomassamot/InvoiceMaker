@@ -13,48 +13,44 @@ namespace back_end.Controllers
     public class CountryController : ControllerBase
     {
         static readonly HttpClient client = new HttpClient();
-        /*private readonly ILogger<CountryController> _logger;
+        public CountryController() {}
 
-        public CountryController(ILogger<CountryController> logger)
-        {
-            _logger = logger;
-        }*/
-        [HttpGet(Name="GetCountries")]
-        public async Task<IEnumerable<Country>> Get()
+        [HttpGet]
+        public async Task<IEnumerable<Country>> Get(string? region = null)
         {
             List<Country> countries = new List<Country>();
-            //var request = WebRequest.Create("https://api.first.org/data/v1/countries");
-
             try
             {
-                using HttpResponseMessage response = await client.GetAsync("https://api.first.org/data/v1/countries");
+                using HttpResponseMessage response = await client.GetAsync("https://api.first.org/data/v1/countries?limit=300");
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
-                //JObject json = JsonConvert.DeserializeObject(responseBody);
                 JObject json = JObject.Parse(responseBody);
 
-                //json["data"].Children().Select(country => countries.Add(new Country(country["country"].ToString(), country["region"].ToString())));
 
+                Random random = new Random(5);
                 var data = json["data"];
-                var currCountry = data.First;
-                while(currCountry != null)
+                var currCountryData = data.First;
+                int maxIter = 1000;
+                int i = 0;
+                while(currCountryData != null)
                 {
-                    var country = currCountry.First["country"].ToString();
-                    var region = currCountry.First["region"].ToString();
+                    if(i == maxIter)
+                    {
+                        Console.WriteLine("Max iterations reached");
+                        break;
+                    }
+                    string currCountry = currCountryData.First["country"].ToString();
+                    string currRegion = currCountryData.First["region"].ToString();
+                    float currVat = random.Next(5, 26);
 
-                    countries.Add(new Country(country, region, 21.0f)); // TODO: PVM turi priklausyti nuo ðalies
+                    if(region == null || region.ToLower() == currRegion.ToLower())
+                    {
+                        countries.Add(new Country(currCountry, currRegion, currVat));
+                    }
                     
-                    Console.WriteLine("ughhhhhhhhhhh: "+ country + " "+ region);
-                    currCountry = currCountry.Next;
+                    currCountryData = currCountryData.Next;
+                    i++;
                 }
-
-                /*for(int i = 0; i < data.Count; i++)
-                {
-                    dynamic country = data[i];
-                    countries.Add(new Country(country.ToString(), country.country, country.region));
-                }*/
-
-                Console.WriteLine(responseBody);
             }
             catch(Exception e)
             {
@@ -62,13 +58,6 @@ namespace back_end.Controllers
                 Console.WriteLine("Message: "+e.Message);
                 Console.WriteLine("Stack: "+e.StackTrace);
             }
-            /*return Enumerable.Range(1,1).Select(index => new Country
-            {
-                Initials = "aaa",
-                Name = "bbb",
-                Region = "ccc"
-            })
-            .ToArray();*/
             return countries;
         }
     }

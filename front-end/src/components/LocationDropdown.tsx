@@ -1,22 +1,22 @@
 import {useState, useEffect} from "react";
-import { Location } from "pages/Register/Register";
+import { Country } from "pages/Register/Register";
 
 interface Props{
     selectedLocationIndex: number
-    allLocations: Location[]
+    allLocations: Country[]
     handleLocationChange: (newLocationIndex : number)=>void
 }
 export default function LocationDropdown(props : Props){
     setTimeout(()=>{}, 5000);
 
     const [searchInput, setSearchInput] = useState("");
-    const [filteredAllLocations, setFilteredAllLocations] = useState<Location[]>();
+    const [filteredAllLocations, setFilteredAllLocations] = useState<Country[]>();
 
     useEffect(()=>{
         setFilteredAllLocations(props.allLocations);
     },[])
     
-    const findIndex = (location : Location)=>{
+    const findIndex = (location : Country)=>{
         for(let i = 0;i<props.allLocations.length;i++){
             let currLocation = props.allLocations[i];
             if(currLocation.name === location.name){
@@ -36,7 +36,7 @@ export default function LocationDropdown(props : Props){
             setFilteredAllLocations(props.allLocations);
         }
 
-        let newFilteredAllLocations : Location[] = [];
+        let newFilteredAllLocations : Country[] = [];
 
         for(let i = 0;i<props.allLocations.length;i++){
             let location = props.allLocations[i];

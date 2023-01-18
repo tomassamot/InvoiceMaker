@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "1/EL/UWLX+itbPf93exlsXGEOdSP+0YEwgablotP08gSbyYnUq/mqr2hvV20c5pTwVE2ZXSTqxKKUEaHNQsk3w==",
+  "dgSpecHash": "pm6HqVvppAyKzA4KPZ3Abb3Y5g2NNxHIPlTarqd4qBQLSeq05m3uPbQDKC8wKWW2pC6JKxBF0lbhnrKzRZ+R1g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\projektas\\back-end\\back-end\\back-end.csproj",
+  "projectFilePath": "C:\\Users\\Tomas2\\Desktop\\kiti\\presentconnection\\InvoiceMaker\\back-end\\back-end\\back-end.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Tomas2\\.nuget\\packages\\castle.core\\5.0.0\\castle.core.5.0.0.nupkg.sha512",
     "C:\\Users\\Tomas2\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.2\\microsoft.entityframeworkcore.7.0.2.nupkg.sha512",
     "C:\\Users\\Tomas2\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.2\\microsoft.entityframeworkcore.abstractions.7.0.2.nupkg.sha512",
     "C:\\Users\\Tomas2\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.2\\microsoft.entityframeworkcore.analyzers.7.0.2.nupkg.sha512",
@@ -22,10 +23,12 @@
     "C:\\Users\\Tomas2\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\Tomas2\\.nuget\\packages\\newtonsoft.json\\12.0.1\\newtonsoft.json.12.0.1.nupkg.sha512",
     "C:\\Users\\Tomas2\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
+    "C:\\Users\\Tomas2\\.nuget\\packages\\nsubstitute\\4.4.0\\nsubstitute.4.4.0.nupkg.sha512",
     "C:\\Users\\Tomas2\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "C:\\Users\\Tomas2\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "C:\\Users\\Tomas2\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
     "C:\\Users\\Tomas2\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
+    "C:\\Users\\Tomas2\\.nuget\\packages\\system.diagnostics.eventlog\\6.0.0\\system.diagnostics.eventlog.6.0.0.nupkg.sha512",
     "C:\\Users\\Tomas2\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
   ],
   "logs": []

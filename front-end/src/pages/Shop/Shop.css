@@ -1,0 +1,59 @@
+.shop-item{
+	border: 1px solid;
+	border-radius: 10px;
+	margin: auto;
+	padding: 9px;
+}
+.product-name{
+    margin: auto;
+    width: 370px;
+}
+.product-description{
+    margin: auto;
+    width: 600px;
+}
+.provider-username{
+    margin: auto;
+    width: 200px;
+}
+.provider-vat{
+    margin: auto;
+    width: 100px;
+}
+.provider-location-region{
+    margin: auto;
+    width: 400px;
+}
+.product-price{
+    margin: auto;
+    width: 100px;
+}
+.buy-button{
+    margin: auto;
+    width: 90px;
+    min-width: 40px;
+}
+button.buy-button{
+    margin: auto;
+    background-color: lime;
+    width: 90px;
+    min-width: 40px;
+}
+.initial.column-wrapper{
+    margin-top: 25px;
+}
+
+.popup{
+    position: absolute;
+    background-color: yellow;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+    width: 1000px;
+    height: 100px;
+    border-radius: 25px;
+}
+
+
+

@@ -4,17 +4,17 @@
     {
         public int Id { get; set; }
         public DateTime DateTime { get; set; }
-        public int ProductId { get; set; }
+        public List<Product> Products { get; set; }
         public int AccountId { get; set; }
-
         public Invoice()
-        { 
+        {
+            Products = new List<Product>();
         }
-        public Invoice(int id, DateTime dateTime, int productId, int accountId)
+        public Invoice(int id, DateTime dateTime, List<Product> products, int accountId)
         {
             Id = id;
             DateTime = dateTime;
-            ProductId = productId;
+            Products = products;
             AccountId = accountId;
         }
     }

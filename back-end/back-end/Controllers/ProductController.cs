@@ -18,7 +18,7 @@ namespace back_end.Controllers
 
         public ProductController()
         {
-            options = new DbContextOptionsBuilder<MyContext>().UseInMemoryDatabase(databaseName: "Test").Options;
+            options = new DbContextOptionsBuilder<MyContext>().UseInMemoryDatabase(databaseName: "Database").Options;
         }
         
         [HttpPost]
@@ -29,7 +29,7 @@ namespace back_end.Controllers
             {
                 int id = context.Products.Any() ?
                     context.Products.Max(x => x.Id) + 1 : 1;
-                product = new Product(id, productCreateDTO.Name, productCreateDTO.Description, productCreateDTO.SumWithVAT, productCreateDTO.SumWithoutVAT, productCreateDTO.AccountId);
+                product = new Product(id, productCreateDTO.Name, productCreateDTO.Description, productCreateDTO.Price, productCreateDTO.AccountId);
                 context.Products.Add(product);
                 await context.SaveChangesAsync();
             }
@@ -45,6 +45,49 @@ namespace back_end.Controllers
         {
             throw new NotImplementedException();
         }
+        private async Task<decimal> CalculatePriceWithVAT(MyContext context, Product product, Account buyerAccount)
+        {
+            decimal priceWithVAT = product.Price;
+            Account? providerAccount = await context.Accounts.FindAsync(product.AccountId);
+            if (providerAccount == null)
+            {
+                Console.WriteLine("Provider not found");
+                return -1M;
+            }
+
+            // provider is paying VAT and buyer is in the same country as provider
+            if (providerAccount.IsPayingVAT && providerAccount.LocationName == buyerAccount.LocationName)
+            {
+                priceWithVAT = product.Price + Math.Round((product.Price * (decimal)buyerAccount.LocationVAT / 100), 2);
+            }
+            // provider is paying VAT, buyer isn't paying VAT, buyer isn't in the same country as provider and both are in the EU
+            else if (providerAccount.IsPayingVAT && !buyerAccount.IsPayingVAT && buyerAccount.LocationName != providerAccount.LocationName && buyerAccount.LocationRegion.ToLower() == "europe")
+            {
+                priceWithVAT = product.Price + Math.Round((product.Price * (decimal)buyerAccount.LocationVAT / 100), 2);
+            }
+
+            return priceWithVAT;
+        }
+        [HttpGet("{buyerId},{productId}")]
+        public async Task<ActionResult<Product>> GetProductWithVAT(int buyerId, int productId)
+        {
+            Account? buyerAccount;
+            Product? product;
+            using (var context = new MyContext(options))
+            {
+                buyerAccount = await context.Accounts.FindAsync(buyerId);
+                product = await context.Products.FindAsync(productId);
+                if (buyerAccount == null || product == null)
+                {
+                    return BadRequest();
+                }
+                decimal priceWithVAT = await CalculatePriceWithVAT(context, product, buyerAccount);
+                product.PriceWithVAT = priceWithVAT;
+            }
+            return Ok(product);
+
+
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
@@ -59,7 +102,7 @@ namespace back_end.Controllers
             }
             else
             {
-                return new Product();
+                return BadRequest();
             }
         }
         [HttpGet]

@@ -15,27 +15,40 @@ namespace back_end.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
-        //AccountRepository accountRepository;
         readonly DbContextOptions<MyContext>  options;
 
         public AccountController()
         {
-            //accountRepository = new AccountRepository();
-            options = new DbContextOptionsBuilder<MyContext>().UseInMemoryDatabase(databaseName: "Test").Options;
+            options = new DbContextOptionsBuilder<MyContext>().UseInMemoryDatabase(databaseName: "Database").Options;
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<Account>> CreateAccount(AccountCreateDTO /*Account*/ accountCreateDTO)
+        public async Task<ActionResult<Account>> CreateAccount(AccountCreateDTO accountCreateDTO)
         {
-            /*Account account = accountRepository.CreateAccount(accountCreateDTO);
-            return new ActionResult<Account>(account);*/
+            if(accountCreateDTO.Username == "")
+            {
+                return BadRequest("Username can't be empty");
+            }
+            if(accountCreateDTO.Password == "")
+            {
+                return BadRequest("Password can't be empty");
+            }
+            if (accountCreateDTO.ConfirmPassword == "")
+            {
+                return BadRequest("Confirm Password can't be empty");
+            }
+            if (accountCreateDTO.Password != accountCreateDTO.ConfirmPassword)
+            {
+                return BadRequest("Password and Confirm Password doesn't match");
+            }
+           
             Account account;
             using (var context = new MyContext(options))
             {
                 int id = context.Accounts.Any() ?
                     context.Accounts.Max(x => x.Id) + 1 : 1;
-                account = new Account(id, accountCreateDTO.Username, accountCreateDTO.PasswordHash, accountCreateDTO.PasswordSalt, accountCreateDTO.Location, accountCreateDTO.IsProvider, accountCreateDTO.IsPayingVAT);
+                account = new Account(id, accountCreateDTO.Username, Account.GetHashString(accountCreateDTO.Password), accountCreateDTO.LocationName, accountCreateDTO.LocationRegion, accountCreateDTO.LocationVAT, accountCreateDTO.IsProvider, accountCreateDTO.IsPayingVAT);
                 context.Accounts.Add(account);
                 await context.SaveChangesAsync();
             }
@@ -44,21 +57,27 @@ namespace back_end.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult> Login(AccountLoginDTO accountLoginDTO)
         {
-            //bool isAuthenticated = accountRepository.Authenticate(accountLoginDTO);
+			if(accountLoginDTO.Username == "")
+            {
+                return BadRequest("Username can't be empty");
+            }
+            if(accountLoginDTO.Password == "")
+            {
+                return BadRequest("Password can't be empty");
+            }
+			
+            var username = accountLoginDTO.Username;
+            var passwordHash = Account.GetHashString(accountLoginDTO.Password);
             using (var context = new MyContext(options))
             {
                 List<Account> allAccount = await context.Accounts.Select(x => x).ToListAsync();
                 foreach(Account account in allAccount)
                 {
-                    if(account.Username.Equals(accountLoginDTO.Username) && account.PasswordHash.Equals(accountLoginDTO.PasswordHash))
+                    if(account.Username.Equals(username) && account.Password.Equals(passwordHash))
                     {
-                        return Ok();
+                        return Ok(account.Id);
                     }
                 }
-                /*if (context.Accounts.Any(x => x.PasswordHash.Equals(accountLoginDTO))) // account exists with the same password hash
-                {
-                    return Ok();
-                }*/
             }
             return BadRequest("No account with given username and password found");
         }
@@ -68,7 +87,6 @@ namespace back_end.Controllers
             Account? account;
             using (var context = new MyContext(options))
             {
-                //context.A
                 account = await context.Accounts.FindAsync(id);
             }
             if(account != null)
@@ -77,7 +95,7 @@ namespace back_end.Controllers
             }
             else
             {
-                return new Account();
+                return BadRequest();
             }
         }
         [HttpGet]
@@ -91,6 +109,21 @@ namespace back_end.Controllers
             }
             return Ok(allAccounts);
         }
-        
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteById(int id)
+        {
+
+            using (var context = new MyContext(options))
+            {
+                Account? accountToDelete = context.Accounts.Find(id);
+                if(accountToDelete != null)
+                {
+                    context.Accounts.Remove(accountToDelete);
+                    await context.SaveChangesAsync();
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
     }
 }
